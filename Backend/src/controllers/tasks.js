@@ -19,13 +19,27 @@ export const getTaskCount = async(req, res) =>{
 }
 
 export const createTask = async(req, res) =>{
-    res.send('Hello World')
+    const dbConnection = await connect();
+    await dbConnection.query("INSERT INTO tasks(title, description) VALUES(?,?)",[
+        req.body.title,
+        req.body.description
+    ]);
+    res.send("Task created")
 }
 
 export const deleteTask = async(req, res) =>{
-    res.send('Hello World')
+    const dbConnection = await connect();
+    await dbConnection.query("DELETE FROM tasks WHERE id =?",[
+        req.params.id,
+    ]);
+    res.send("Task deleted succesfully")
 }
 
-export const updateTask = (req, res) =>{
-    res.send('Hello World')
+export const updateTask = async (req, res) =>{
+    const dbConnection = await connect();
+    const result = await dbConnection.query("UPDATE tasks SET ? WHERE id=?",[
+        req.body,
+        req.params.id
+    ])
+    res.send("Task modified")
 }
